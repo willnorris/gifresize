@@ -14,24 +14,19 @@
 
 package main
 
-// This demonstrates some problems when resizing animated gifs.
-
+// This demonstrates a solution to resizing animated gifs.
+//
 // Frames in an animated gif aren't necessarily the same size, subsequent
 // frames are overlayed on previous frames. Therefore, resizing the frames
 // individually may cause problems due to aliasing of transparent pixels. This
 // example tries to avoid this by building frames from all previous frames and
 // resizing the frames as RGB.
-//
-// There is still a problem when resizing shapes.gif results in frames with
-// color artifacts. e.g. See frame 19 in shapes.out.gif vs. frames/shapes.19.jpg
 
 import (
-	"fmt"
 	"image"
 	"image/color/palette"
 	"image/draw"
 	"image/gif"
-	"image/jpeg"
 	"log"
 	"os"
 
@@ -66,27 +61,17 @@ func process(filename string) {
 	// Resize each frame.
 	for index, frame := range im.Image {
 		bounds := frame.Bounds()
-		draw.Draw(img, bounds, frame, bounds.Min, draw.Src)
+		draw.Draw(img, bounds, frame, bounds.Min, draw.Over)
 		im.Image[index] = ImageToPaletted(ProcessImage(img))
 	}
 
 	// Write resized gif.
-	out, err := os.Create(filename + ".out.gif")
+	out, err := os.Create(filename + ".out.fixed.gif")
 	if err != nil {
 		log.Fatal(err.Error())
 	}
 	defer out.Close()
 	gif.EncodeAll(out, im)
-
-	// Write each frame to a jpeg.
-	for i := 0; i < len(im.Image); i++ {
-		jout, err := os.Create(fmt.Sprintf("frames/%s.%d.jpg", filename, i))
-		if err != nil {
-			log.Fatal(err.Error())
-		}
-		defer jout.Close()
-		jpeg.Encode(jout, im.Image[i], &jpeg.Options{90})
-	}
 }
 
 func ProcessImage(img image.Image) image.Image {
