@@ -1,4 +1,5 @@
 // Copyright 2013 Daniel Pupius. All rights reserved.
+// Copyright 2015 Google. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,7 +20,7 @@
 // individually may cause problems due to aliasing of transparent pixels. This
 // package tries to avoid this by building frames from all previous frames and
 // resizing the frames as RGB.
-package gifresize
+package gifresize // import "willnorris.com/go/gifresize"
 
 import (
 	"image"
