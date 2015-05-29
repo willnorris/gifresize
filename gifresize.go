@@ -35,6 +35,11 @@ type TransformFunc func(image.Image) image.Image
 // Process the GIF read from r, applying transform to each frame, and writing
 // the result to w.
 func Process(w io.Writer, r io.Reader, transform TransformFunc) error {
+	if transform == nil {
+		_, err := io.Copy(w, r)
+		return err
+	}
+
 	// Decode the original gif.
 	im, err := gif.DecodeAll(r)
 	if err != nil {
