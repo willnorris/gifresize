@@ -1,6 +1,6 @@
 # gifresize 
 
-[![GoDoc](https://godoc.org/willnorris.com/go/gifresize?status.svg)](https://godoc.org/willnorris.com/go/gifresize)
+[![GoDoc](https://img.shields.io/badge/godoc-reference-blue)](https://pkg.go.dev/willnorris.com/go/gifresize)
 
 gifresize is a simple go package for transforming animated GIFs.
 
